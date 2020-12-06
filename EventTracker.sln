@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventTracker", "EventTracker\EventTracker.csproj", "{DB4B17BD-A410-4481-B875-F64C1E5D14E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventTracker", "EventTracker\EventTracker.csproj", "{DB4B17BD-A410-4481-B875-F64C1E5D14E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTests", "NUnitTestProject1\NUnitTests.csproj", "{22231C84-9A46-4B5A-B254-94DFEA7C3393}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DB4B17BD-A410-4481-B875-F64C1E5D14E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB4B17BD-A410-4481-B875-F64C1E5D14E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB4B17BD-A410-4481-B875-F64C1E5D14E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22231C84-9A46-4B5A-B254-94DFEA7C3393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22231C84-9A46-4B5A-B254-94DFEA7C3393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22231C84-9A46-4B5A-B254-94DFEA7C3393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22231C84-9A46-4B5A-B254-94DFEA7C3393}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
