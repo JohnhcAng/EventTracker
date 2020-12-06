@@ -2,9 +2,9 @@
 
 namespace EventTracker.Engines
 {
-    interface IUsersEngine
+    public interface IUsersEngine
     {
-        int CheckLogin(string enteredUserName, string enteredPassword);
-        int CheckRegistration(User newUser);
+        string CheckLogin(string enteredUserName, string enteredPassword);
+        string CheckRegistration(User newUser);
     }
 }
