@@ -8,8 +8,8 @@ namespace EventTracker.Accessors
 {
     public interface IUsersAccessor
     {
-        User Find(string enteredUserName);
-        void Insert(User newUser);
+        User FindUser(string enteredUserName);
+        void InsertUser(User newUser);
         string ComputeSha256Hash(string password);
     }
 }
