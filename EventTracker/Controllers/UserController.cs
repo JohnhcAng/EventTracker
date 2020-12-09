@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EventTracker.Controllers
 {
-    public class UsersController : Controller
+    public class UserController : Controller
     {
         private readonly IUsersEngine _usersEngine = new UsersEngine();
         private readonly IUsersAccessor _usersAccessor = new UsersAccessor();
