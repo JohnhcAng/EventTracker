@@ -17,7 +17,7 @@ namespace EventTracker.Accessors
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
-                command.Parameters.Add("@userName", System.Data.SqlDbType.NVarChar, 30);
+                command.Parameters.Add("@userName", System.Data.SqlDbType.VarChar, 30);
 
                 command.Parameters["@userName"].Value = enteredUserName;
 
@@ -48,8 +48,8 @@ namespace EventTracker.Accessors
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
-                command.Parameters.Add("@userName", System.Data.SqlDbType.NVarChar, 30);
-                command.Parameters.Add("@password", System.Data.SqlDbType.NVarChar, 64);
+                command.Parameters.Add("@userName", System.Data.SqlDbType.VarChar, 30);
+                command.Parameters.Add("@password", System.Data.SqlDbType.VarChar, 64);
 
                 command.Parameters["@userName"].Value = newUser.UserName;
                 command.Parameters["@password"].Value = ComputeSha256Hash(newUser.Password);

@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace EventTracker.Accessors
 {
-    interface IEventsAccessor
+    public interface IEventsAccessor
     {
         IQueryable<Event> GetAllEvents(string userName);
         Event FindEvent(int id);
         void InsertEvent(Event evnt);
-        void ResetEvent(Event evnt);
+        void IncrementEvent(Event evnt);
         void DeleteEvent(Event evnt);
     }
 }

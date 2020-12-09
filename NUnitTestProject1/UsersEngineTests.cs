@@ -15,11 +15,6 @@ namespace NUnitTests
             _usersEngine = new UsersEngine(_mockedUsersAccessor);
         }
 
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void CheckLogin_WithNullCred_ShouldReturnNullCred()
         {

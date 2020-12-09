@@ -7,7 +7,7 @@ namespace EventTracker.Models
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public string Description { get; set; }
-        public int NumResets { get; set; }
-        public int UserName { get; set; }
+        public int NumOccurences { get; set; }
+        public string UserName { get; set; }
     }
 }

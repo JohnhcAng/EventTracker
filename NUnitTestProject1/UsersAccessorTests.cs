@@ -10,11 +10,6 @@ namespace NUnitTests
     {
         private readonly IUsersAccessor _usersAccessor = new UsersAccessor();
 
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
         public void FindUser_WithUserExisting_ShouldReturnExistingUser()
         {

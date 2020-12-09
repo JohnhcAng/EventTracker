@@ -1,6 +1,8 @@
 ﻿using EventTracker.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace EventTracker.Accessors
@@ -11,27 +13,133 @@ namespace EventTracker.Accessors
 
         public IQueryable<Event> GetAllEvents(string userName)
         {
-            throw new NotImplementedException();
+            string query = "SELECT * FROM EventTracker.dbo.Events WHERE userName = @userName ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add("@userName", SqlDbType.VarChar, 30);
+
+                command.Parameters["@userName"].Value = userName;
+
+                command.CommandType = CommandType.Text;
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                List<Event> evnts = new List<Event>();
+
+                while (reader.Read())
+                {
+                    Event existingEvent = new Event
+                    {
+                        Id = (int)reader["eventId"],
+                        DateCreated = (DateTime)reader["dateCreated"],
+                        Description = reader["description"].ToString(),
+                        NumOccurences = (int)reader["numOccurences"],
+                        UserName = reader["userName"].ToString()
+                    };
+
+                    evnts.Add(existingEvent);
+                }
+                return evnts.AsQueryable();
+            }
         }
 
         public Event FindEvent(int id)
         {
-            throw new NotImplementedException();
+            string query = "SELECT * FROM EventTracker.dbo.Events WHERE eventId = @eventId ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add("@eventId", SqlDbType.Int);
+
+                command.Parameters["@eventId"].Value = id;
+
+                command.CommandType = CommandType.Text;
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                Event existingEvent = new Event();
+
+                if (reader.Read())
+                {
+                    existingEvent.Id = (int)reader["eventID"];
+                    existingEvent.DateCreated = (DateTime)reader["dateCreated"];
+                    existingEvent.Description = reader["description"].ToString();
+                    existingEvent.NumOccurences = (int)reader["numOccurences"];
+                    existingEvent.UserName = reader["userName"].ToString();
+
+                    return existingEvent;
+                }
+
+                return null;
+            }
         }
 
         public void InsertEvent(Event evnt)
         {
-            throw new NotImplementedException();
+            string query = "INSERT INTO EventTracker.dbo.Events VALUES ( @dateCreated , @description , 1, @userName )";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add("@dateCreated", SqlDbType.Date);
+                command.Parameters.Add("@description", SqlDbType.VarChar, 300);
+                command.Parameters.Add("@userName", SqlDbType.VarChar, 30);
+
+                command.Parameters["@dateCreated"].Value = evnt.DateCreated;
+                command.Parameters["@description"].Value = evnt.Description;
+                command.Parameters["@userName"].Value = evnt.UserName;
+
+                command.CommandType = CommandType.Text;
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
         }
 
-        public void ResetEvent(Event evnt)
+        public void IncrementEvent(Event evnt)
         {
-            throw new NotImplementedException();
+            string query = "UPDATE EventTracker.dbo.Events SET numOccurences = numOccurences + 1 WHERE eventID = @eventID ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add("@eventID", SqlDbType.Int);
+
+                command.Parameters["@eventID"].Value = evnt.Id;
+
+                command.CommandType = CommandType.Text;
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
         }
 
         public void DeleteEvent(Event evnt)
         {
-            throw new NotImplementedException();
+            string query = "DELETE FROM EventTracker.dbo.Events WHERE eventID = @eventID ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add("@eventID", System.Data.SqlDbType.Int);
+
+                command.Parameters["@eventID"].Value = evnt.Id;
+
+                command.CommandType = CommandType.Text;
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
