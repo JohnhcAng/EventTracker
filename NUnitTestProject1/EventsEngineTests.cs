@@ -27,9 +27,9 @@ namespace NUnitTests
                 Id = 1,
                 DateCreated = new DateTime(2020, 12, 6),
                 Description = "Test Description",
-                NumOccurences = 1,
                 UserName = "test_userName"
             };
+            int daysPassedToCheck = (DateTime.Now.Date - eventToBeAdded.DateCreated.Date).Days;
 
             //Act
             _eventsEngine.AddEvent(eventToBeAdded);
@@ -38,8 +38,8 @@ namespace NUnitTests
             //Assert
             Assert.That(foundEvent.Id, Is.EqualTo(eventToBeAdded.Id));
             Assert.That(foundEvent.DateCreated, Is.EqualTo(eventToBeAdded.DateCreated));
+            Assert.That(foundEvent.DaysPassed, Is.EqualTo(daysPassedToCheck));
             Assert.That(foundEvent.Description, Is.EqualTo(eventToBeAdded.Description));
-            Assert.That(foundEvent.NumOccurences, Is.EqualTo(eventToBeAdded.NumOccurences));
             Assert.That(foundEvent.UserName, Is.EqualTo(eventToBeAdded.UserName));
 
             //Teardown
@@ -55,7 +55,6 @@ namespace NUnitTests
                 Id = 1,
                 DateCreated = new DateTime(2020, 12, 6),
                 Description = "Test Description",
-                NumOccurences = 1,
                 UserName = "test_userName"
             };
             _eventsEngine.AddEvent(eventToBeDeleted);
@@ -66,31 +65,6 @@ namespace NUnitTests
 
             //Assert
             Assert.That(shouldbeNull, Is.Null);
-        }
-
-        [Test]
-        public void IncrementEvent_NumOccurencesOfEventShouldBeIncremented()
-        {
-            //Arrange
-            Event eventToBeIncremented = new Event()
-            {
-                Id = 1,
-                DateCreated = new DateTime(2020, 12, 6),
-                Description = "Test Description",
-                NumOccurences = 1,
-                UserName = "test_userName"
-            };
-            _eventsEngine.AddEvent(eventToBeIncremented);
-
-            //Act
-            _eventsEngine.IncrementEvent(eventToBeIncremented);
-            Event incrementedEvent = _mockedEventsAccessor.FindEvent(eventToBeIncremented.Id);
-
-            //Assert
-            Assert.That(incrementedEvent.NumOccurences, Is.EqualTo(2));
-
-            //Teardown
-            _mockedEventsAccessor.DeleteEvent(eventToBeIncremented);
         }
     }
 }

@@ -11,8 +11,6 @@ namespace EventTracker.Controllers
         private readonly IUsersEngine _usersEngine = new UsersEngine();
         private readonly IUsersAccessor _usersAccessor = new UsersAccessor();
 
-        const string user = "_User";
-
         public ActionResult Login()
         {
             return View();
@@ -38,7 +36,7 @@ namespace EventTracker.Controllers
                     break;
 
                 case "SuccessfulLogin":
-                    HttpContext.Session.SetString(user, userName);
+                    HttpContext.Session.SetString("currentUser", userName);
                     return RedirectToAction("Index", "Home");
             }
 
@@ -70,7 +68,7 @@ namespace EventTracker.Controllers
                     break;
 
                 case "SuccessfulRegistration":
-                    HttpContext.Session.SetString(user, newUser.UserName);
+                    HttpContext.Session.SetString("currentUser", newUser.UserName);
                     return RedirectToAction("Index", "Home");
             }
 

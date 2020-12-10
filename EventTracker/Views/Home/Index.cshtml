@@ -1,8 +1,22 @@
-﻿@{
+﻿@model IEnumerable<EventTracker.Models.Event>
+
+@{ 
+    Layout = "_Layout";
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Events</h2>
+
+<p align="right"> <a href="/Event/AddEvent">Add Event</a> </p>
+
+<table class="table">
+
+    @foreach (var eventDisplay in Model)
+    {
+        <tr>
+            <td>It's been <b>@Html.DisplayFor(modelDisplay => eventDisplay.DaysPassed)</b> days since <b>@Html.DisplayFor(modelDisplay => eventDisplay.Description)</b></td>
+        </tr>
+    }
+
+</table>
+

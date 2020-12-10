@@ -45,6 +45,7 @@ namespace NUnitTests
             //Arrange
             int id = 1;
             DateTime dateToCheck = new DateTime(2020, 12, 6);
+            int daysPassedToCheck = (DateTime.Now.Date - dateToCheck.Date).Days;
 
             //Act
             Event shouldExist = _eventsAccessor.FindEvent(id);
@@ -52,8 +53,8 @@ namespace NUnitTests
             //Assert
             Assert.That(shouldExist.Id, Is.EqualTo(1));
             Assert.That(shouldExist.DateCreated, Is.EqualTo(dateToCheck));
+            Assert.That(shouldExist.DaysPassed, Is.EqualTo(daysPassedToCheck));
             Assert.That(shouldExist.Description, Is.EqualTo("I've worked on this project"));
-            Assert.That(shouldExist.NumOccurences, Is.EqualTo(1));
             Assert.That(shouldExist.UserName, Is.EqualTo("test_userName"));
         }
 
@@ -65,7 +66,6 @@ namespace NUnitTests
             {
                 DateCreated = new DateTime(2020, 12, 6),
                 Description = "I've used the bathroom",
-                NumOccurences = 1,
                 UserName = "test_userName"
             };
 
@@ -76,36 +76,10 @@ namespace NUnitTests
             //Assert
             Assert.That(foundEvent.DateCreated, Is.EqualTo(eventToBeInserted.DateCreated));
             Assert.That(foundEvent.Description, Is.EqualTo(eventToBeInserted.Description));
-            Assert.That(foundEvent.NumOccurences, Is.EqualTo(eventToBeInserted.NumOccurences));
             Assert.That(foundEvent.UserName, Is.EqualTo(eventToBeInserted.UserName));
 
             //TearDown
             _eventsAccessor.DeleteEvent(foundEvent);
-        }
-
-        [Test]
-        public void IncrementEvent_ShouldIncrementNumOccurencesOfEventByOne()
-        {
-            //Arrange
-            Event insertedEvent = new Event()
-            {
-                DateCreated = new DateTime(2020, 12, 6),
-                Description = "Test Description",
-                NumOccurences = 1,
-                UserName = "test_userName"
-            };
-            _eventsAccessor.InsertEvent(insertedEvent);
-            Event eventToIncrement = this.FindEventWithDescription(insertedEvent.Description);
-
-            //Act
-            _eventsAccessor.IncrementEvent(eventToIncrement);
-            Event incrementedEvent = _eventsAccessor.FindEvent(eventToIncrement.Id);
-
-            //Assert
-            Assert.That(incrementedEvent.NumOccurences, Is.EqualTo(2));
-
-            //Teardown
-            _eventsAccessor.DeleteEvent(eventToIncrement);
         }
 
         [Test]
@@ -116,7 +90,6 @@ namespace NUnitTests
             {
                 DateCreated = DateTime.Now,
                 Description = "Purpose to be deleted",
-                NumOccurences = 1,
                 UserName = "test_userName"
             };
             _eventsAccessor.InsertEvent(insertedEvent);
@@ -157,8 +130,8 @@ namespace NUnitTests
                 {
                     existingEvent.Id = (int)reader["eventID"];
                     existingEvent.DateCreated = (DateTime)reader["dateCreated"];
+                    existingEvent.DaysPassed = (DateTime.Now.Date - existingEvent.DateCreated.Date).Days;
                     existingEvent.Description = reader["description"].ToString();
-                    existingEvent.NumOccurences = (int)reader["numOccurences"];
                     existingEvent.UserName = reader["userName"].ToString();
 
                     return existingEvent;

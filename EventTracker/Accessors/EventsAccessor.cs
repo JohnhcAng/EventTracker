@@ -37,12 +37,17 @@ namespace EventTracker.Accessors
                         Id = (int)reader["eventId"],
                         DateCreated = (DateTime)reader["dateCreated"],
                         Description = reader["description"].ToString(),
-                        NumOccurences = (int)reader["numOccurences"],
                         UserName = reader["userName"].ToString()
                     };
 
                     evnts.Add(existingEvent);
                 }
+
+                foreach (Event evnt in evnts)
+                {
+                    evnt.DaysPassed = (DateTime.Now.Date - evnt.DateCreated.Date).Days;
+                }
+
                 return evnts.AsQueryable();
             }
         }
@@ -70,8 +75,8 @@ namespace EventTracker.Accessors
                 {
                     existingEvent.Id = (int)reader["eventID"];
                     existingEvent.DateCreated = (DateTime)reader["dateCreated"];
+                    existingEvent.DaysPassed = (DateTime.Now.Date - existingEvent.DateCreated.Date).Days;
                     existingEvent.Description = reader["description"].ToString();
-                    existingEvent.NumOccurences = (int)reader["numOccurences"];
                     existingEvent.UserName = reader["userName"].ToString();
 
                     return existingEvent;
@@ -83,7 +88,7 @@ namespace EventTracker.Accessors
 
         public void InsertEvent(Event evnt)
         {
-            string query = "INSERT INTO EventTracker.dbo.Events VALUES ( @dateCreated , @description , 1, @userName )";
+            string query = "INSERT INTO EventTracker.dbo.Events VALUES ( @dateCreated , @description , @userName )";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -95,25 +100,6 @@ namespace EventTracker.Accessors
                 command.Parameters["@dateCreated"].Value = evnt.DateCreated;
                 command.Parameters["@description"].Value = evnt.Description;
                 command.Parameters["@userName"].Value = evnt.UserName;
-
-                command.CommandType = CommandType.Text;
-
-                connection.Open();
-
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public void IncrementEvent(Event evnt)
-        {
-            string query = "UPDATE EventTracker.dbo.Events SET numOccurences = numOccurences + 1 WHERE eventID = @eventID ";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                command.Parameters.Add("@eventID", SqlDbType.Int);
-
-                command.Parameters["@eventID"].Value = evnt.Id;
 
                 command.CommandType = CommandType.Text;
 

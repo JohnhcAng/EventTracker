@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using EventTracker.Models;
+using Microsoft.AspNetCore.Http;
+using EventTracker.Accessors;
 
 namespace EventTracker.Controllers
 {
@@ -13,14 +15,17 @@ namespace EventTracker.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private readonly IEventsAccessor _eventsAccessor = new EventsAccessor();
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            return View();
+            string user = HttpContext.Session.GetString("currentUser");
+            return View(_eventsAccessor.GetAllEvents(user));
         }
 
         public IActionResult Privacy()

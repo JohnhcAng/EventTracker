@@ -25,10 +25,5 @@ namespace EventTracker.Engines
         {
             _eventsAccessor.DeleteEvent(evnt);
         }
-
-        public void IncrementEvent(Event evnt)
-        {
-            _eventsAccessor.IncrementEvent(evnt);
-        }
     }
 }

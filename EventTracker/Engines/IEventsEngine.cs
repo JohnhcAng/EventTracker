@@ -10,6 +10,5 @@ namespace EventTracker.Engines
     {
         void AddEvent(Event evnt);
         void DeleteEvent(Event evnt);
-        void IncrementEvent(Event evnt);
     }
 }
