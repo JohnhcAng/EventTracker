@@ -1,11 +1,7 @@
 ﻿using EventTracker.Engines;
 using EventTracker.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EventTracker.Controllers
 {
@@ -13,23 +9,29 @@ namespace EventTracker.Controllers
     {
         private readonly IEventsEngine _eventsEngine = new EventsEngine();
 
-        public ActionResult AddEvent()
+        public IActionResult AddEvent()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult AddEvent(Event evnt)
+        public IActionResult AddEvent(Event evnt)
         {
-            evnt.UserName = HttpContext.Session.GetString("currentUser"); //This doesnt work. Maybe IdleTimeout in Startup is the reason?
+            evnt.UserName = Request.Cookies["currentUser"];
             evnt.DateCreated = DateTime.Now;
             _eventsEngine.AddEvent(evnt);
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Delete(Event evnt)
+        public IActionResult DeleteEvent(Event evnt)
         {
             _eventsEngine.DeleteEvent(evnt);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult ResetEvent(Event evnt)
+        {
+            _eventsEngine.ResetEvent(evnt);
             return RedirectToAction("Index", "Home");
         }
     }

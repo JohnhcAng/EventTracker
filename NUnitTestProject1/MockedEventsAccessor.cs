@@ -45,6 +45,14 @@ namespace NUnitTests
             events.Add(evnt);
         }
 
+        public void ResetEvent(Event evnt)
+        {
+            Event foundEvent = events.FirstOrDefault(e => e.Id == evnt.Id);
+            events.Remove(evnt);
+            foundEvent.DateCreated = DateTime.Now;
+            events.Add(foundEvent);
+        }
+
         public void DeleteEvent(Event evnt)
         {
             events.Remove(evnt);

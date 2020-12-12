@@ -83,6 +83,30 @@ namespace NUnitTests
         }
 
         [Test]
+        public void ResetEvent_ShouldResetDateCreatedOfEvent()
+        {
+            //Arrange
+            Event insertedEvent = new Event()
+            {
+                DateCreated = new DateTime(2020, 12, 6),
+                Description = "dateCreated should be reset",
+                UserName = "test_userName"
+            };
+            _eventsAccessor.InsertEvent(insertedEvent);
+            Event eventToReset = this.FindEventWithDescription("dateCreated should be reset");
+
+            //Act
+            _eventsAccessor.ResetEvent(eventToReset);
+            Event resetedEvent = this.FindEventWithDescription("dateCreated should be reset");
+
+            //Assert
+            Assert.That(resetedEvent.DateCreated, Is.EqualTo(DateTime.Now.Date));
+
+            //Teardown
+            _eventsAccessor.DeleteEvent(resetedEvent);
+        }
+
+        [Test]
         public void DeleteEvent_ShouldNotBeAbleToFindEvent()
         {
             //Arrange

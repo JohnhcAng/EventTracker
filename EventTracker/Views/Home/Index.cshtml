@@ -15,6 +15,8 @@
     {
         <tr>
             <td>It's been <b>@Html.DisplayFor(modelDisplay => eventDisplay.DaysPassed)</b> days since <b>@Html.DisplayFor(modelDisplay => eventDisplay.Description)</b></td>
+            <td>| @Html.ActionLink("Delete", "DeleteEvent", "Event", new { id = eventDisplay.Id }, "") |</td>
+            <td>| @Html.ActionLink("Reset", "ResetEvent", "Event", new { id = eventDisplay.Id }, "") |</td>
         </tr>
     }
 

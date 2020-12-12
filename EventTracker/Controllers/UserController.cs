@@ -1,23 +1,22 @@
-﻿using EventTracker.Accessors;
-using EventTracker.Engines;
+﻿using EventTracker.Engines;
 using EventTracker.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace EventTracker.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUsersEngine _usersEngine = new UsersEngine();
-        private readonly IUsersAccessor _usersAccessor = new UsersAccessor();
 
-        public ActionResult Login()
+        public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(string userName, string Password)
+        public IActionResult Login(string userName, string Password)
         {
             string loginRequestResult = _usersEngine.CheckLogin(userName, Password);
 
@@ -36,20 +35,24 @@ namespace EventTracker.Controllers
                     break;
 
                 case "SuccessfulLogin":
-                    HttpContext.Session.SetString("currentUser", userName);
+                    CookieOptions cookieOptions = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(1)
+                    };
+                    Response.Cookies.Append("currentUser", userName, cookieOptions);
                     return RedirectToAction("Index", "Home");
             }
 
             return View();
         }
 
-        public ActionResult Register()
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Register(User newUser)
+        public IActionResult Register(User newUser)
         {
             string registerRequestResult = _usersEngine.CheckRegistration(newUser);
 
@@ -68,16 +71,20 @@ namespace EventTracker.Controllers
                     break;
 
                 case "SuccessfulRegistration":
-                    HttpContext.Session.SetString("currentUser", newUser.UserName);
+                    CookieOptions cookieOptions = new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(1)
+                    };
+                    Response.Cookies.Append("currentUser", newUser.UserName, cookieOptions);
                     return RedirectToAction("Index", "Home");
             }
 
             return View();
         }
 
-        public ActionResult Logout()
+        public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
+            Response.Cookies.Delete("currentUser");
             return RedirectToAction("Login");
         }
     }

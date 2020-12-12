@@ -1,0 +1,25 @@
+﻿DROP TABLE IF EXISTS EventTracker.dbo.Events;
+DROP TABLE IF EXISTS EventTracker.dbo.Users;
+
+CREATE TABLE EventTracker.dbo.Users (
+	userName VARCHAR(30),
+	password VARCHAR(64),
+	CONSTRAINT Users_PK PRIMARY KEY (userName)
+)
+
+CREATE TABLE EventTracker.dbo.Events (
+	eventID INT IDENTITY(1,1) NOT NULL,
+	dateCreated DATE NOT NULL,
+	description VARCHAR(300) NOT NULL,
+	userName VARCHAR(30) NOT NULL,
+	CONSTRAINT Events_PK PRIMARY KEY (eventId),
+	CONSTRAINT Events_FK FOREIGN KEY (userName) REFERENCES EventTracker.dbo.Users(userName)
+)
+
+INSERT INTO EventTracker.dbo.Users VALUES ('test_userName', '10a6e6cc8311a3e2bcc09bf6c199adecd5dd59408c343e926b129c4914f3cb01');
+INSERT INTO EventTracker.dbo.Events VALUES ('2020-12-6', 'I''ve worked on this project', 'test_userName');
+INSERT INTO EventTracker.dbo.Events VALUES ('2020-12-6', 'I''ve eaten Poke Bowl', 'test_userName');
+INSERT INTO EventTracker.dbo.Events VALUES ('2020-12-7', 'I''ve gotten Covid tested', 'test_userName');
+
+SELECT * FROM EventTracker.dbo.Users;
+SELECT * FROM EventTracker.dbo.Events;

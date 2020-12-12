@@ -1,11 +1,13 @@
 ﻿using EventTracker.Accessors;
 using EventTracker.Models;
+using System;
 
 namespace EventTracker.Engines
 {
     public class UsersEngine : IUsersEngine
     {
         private readonly IUsersAccessor _usersAccessor = new UsersAccessor();
+        private readonly IEventsAccessor _eventsAccessor = new EventsAccessor();
 
         public UsersEngine()
         {
@@ -74,6 +76,15 @@ namespace EventTracker.Engines
                 else
                 {
                     _usersAccessor.InsertUser(newUser);
+
+                    Event defaultEvent = new Event()
+                    {
+                        DateCreated = DateTime.Now,
+                        Description = "You created this account.",
+                        UserName = newUser.UserName
+                    };
+
+                    _eventsAccessor.InsertEvent(defaultEvent);
 
                     return SuccessfulRegistration;
                 }

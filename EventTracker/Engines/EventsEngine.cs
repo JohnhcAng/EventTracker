@@ -21,6 +21,11 @@ namespace EventTracker.Engines
             _eventsAccessor.InsertEvent(evnt);
         }
 
+        public void ResetEvent(Event evnt)
+        {
+            _eventsAccessor.ResetEvent(evnt);
+        }
+
         public void DeleteEvent(Event evnt)
         {
             _eventsAccessor.DeleteEvent(evnt);

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using EventTracker.Models;
 using Microsoft.AspNetCore.Http;
 using EventTracker.Accessors;
@@ -13,24 +8,12 @@ namespace EventTracker.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
         private readonly IEventsAccessor _eventsAccessor = new EventsAccessor();
 
-        public HomeController(ILogger<HomeController> logger)
+        public IActionResult Index()
         {
-            _logger = logger;
-        }
-
-        public ActionResult Index()
-        {
-            string user = HttpContext.Session.GetString("currentUser");
+            string user = Request.Cookies["currentUser"];
             return View(_eventsAccessor.GetAllEvents(user));
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

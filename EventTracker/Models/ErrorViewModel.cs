@@ -1,5 +1,3 @@
-using System;
-
 namespace EventTracker.Models
 {
     public class ErrorViewModel

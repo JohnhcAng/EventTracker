@@ -48,6 +48,8 @@ namespace EventTracker.Accessors
                     evnt.DaysPassed = (DateTime.Now.Date - evnt.DateCreated.Date).Days;
                 }
 
+                evnts = evnts.OrderByDescending(e => e.DateCreated).ToList();
+
                 return evnts.AsQueryable();
             }
         }
@@ -109,6 +111,27 @@ namespace EventTracker.Accessors
             }
         }
 
+        public void ResetEvent(Event evnt)
+        {
+            string query = "UPDATE EventTracker.dbo.Events SET dateCreated = @newDate WHERE eventID = @eventID ";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.Add("@newDate", SqlDbType.Date);
+                command.Parameters.Add("@eventID", SqlDbType.Int);
+
+                command.Parameters["@newDate"].Value = DateTime.Now;
+                command.Parameters["@eventID"].Value = evnt.Id;
+
+                command.CommandType = CommandType.Text;
+
+                connection.Open();
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         public void DeleteEvent(Event evnt)
         {
             string query = "DELETE FROM EventTracker.dbo.Events WHERE eventID = @eventID ";
@@ -116,7 +139,7 @@ namespace EventTracker.Accessors
             using (SqlConnection connection = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand(query, connection))
             {
-                command.Parameters.Add("@eventID", System.Data.SqlDbType.Int);
+                command.Parameters.Add("@eventID", SqlDbType.Int);
 
                 command.Parameters["@eventID"].Value = evnt.Id;
 
